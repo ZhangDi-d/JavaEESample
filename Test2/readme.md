@@ -1,0 +1,1 @@
+javaconfig-bean之间的注入
