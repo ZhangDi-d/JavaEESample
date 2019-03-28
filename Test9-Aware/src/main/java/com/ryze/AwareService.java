@@ -12,48 +12,47 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 
 /**
- * Created by xueLai on 2019/3/27.
+ * Created by sang on 16-12-14.
  */
-@Service("AwareService")
-@PropertySource(value = "test.properties", encoding = "UTF-8")
-public class AwareService implements BeanNameAware, BeanFactoryAware, ResourceLoaderAware, EnvironmentAware{
+@Service
+@PropertySource(value = "t.properties", encoding = "UTF-8")
+public class AwareService implements BeanNameAware, BeanFactoryAware, ResourceLoaderAware, EnvironmentAware {
     private String beanName;
-    private ResourceLoader resourceLoader;
+    private ResourceLoader loader;
     private Environment environment;
 
-    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-
-    }
-
+    @Override
     public void setBeanName(String s) {
-        this.beanName=s;
+        this.beanName = s;
     }
 
-    public void setEnvironment(Environment environment) {
-        this.environment = environment;
-    }
-
+    @Override
     public void setResourceLoader(ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
+        this.loader = resourceLoader;
     }
 
-    public void output(){
+    public void output() {
         System.out.println("Bean的名称为：" + beanName);
-        String property = environment.getProperty("spring.username");
-        System.out.println("spring.username:"+property);
-        Resource resource = resourceLoader.getResource("test.txt");
+        Resource resource = loader.getResource("t.txt");
         try {
-            System.out.println(IOUtils.toString(resource.getInputStream(),Charset.forName("UTF-8")));
+            System.out.println(IOUtils.toString(resource.getInputStream(), "UTF-8"));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println(environment.getProperty("spring.username"));
+    }
 
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        //获取Bean的生成工厂
+    }
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
     }
 }
