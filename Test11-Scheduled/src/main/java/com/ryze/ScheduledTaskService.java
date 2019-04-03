@@ -30,7 +30,7 @@ public class ScheduledTaskService {
         logger.info("延迟10s之后，每隔10s执行一次");
     }
 
-    @Scheduled(cron = "0 0/5 *  * * ?")
+    @Scheduled(cron = "0 0/5 *  * * ?")// 每隔5分钟执行一次,不是以服务器启动后开始计算,而是以当前时间点是否是10:05.11:35之类来判断.
     public void fixTimeExecution(){
         logger.info("在指定时间执行:"+sdf.get().format(new Date()));
     }
